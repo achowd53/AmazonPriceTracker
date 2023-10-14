@@ -21,3 +21,6 @@ for (var account of environments) {
     env: account,
   }); 
 }
+
+// Create templates for stacks
+app.synth();
