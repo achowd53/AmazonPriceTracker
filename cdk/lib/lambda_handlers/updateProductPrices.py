@@ -1,12 +1,19 @@
+'''
+void updateProductPrices()
+- updates products tracked by DynamoDB#1 if last updated over an hour ago
+- Python script that webscrapes Amazon with Selenium/BeautifulSoup
+'''
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
 from datetime import datetime
 import time
 
 def webscrapeAmazon(URL_LIST):
-    def webscrapeAmazonUrl(URL):
+    def webscrapeAmazonUrl(URL, retry=3):
+        # If out of retries, return None
+        if retry == 0:
+            return None
+        
         # Navigate to Amazon
         driver.get(URL)
         time.sleep(3)
@@ -21,7 +28,7 @@ def webscrapeAmazon(URL_LIST):
         try:
             title = driver.find_element(By.ID, "productTitle").text
         except:
-            return None
+            return webscrapeAmazonUrl(URL, retry-1)
         title_frags = title.replace(',',':').replace(' -',':').replace('- ',':').split(':')
         for title_frag in title_frags:
             truncated_title += title_frag
@@ -33,7 +40,7 @@ def webscrapeAmazon(URL_LIST):
         try:
             current_price = driver.find_elements(By.XPATH, '//span[@class="a-price aok-align-center reinventPricePriceToPayMargin priceToPay"]/span[@class="a-offscreen"]')[0].get_attribute('textContent')
         except:
-            return None
+            return webscrapeAmazonUrl(URL, retry-1)
         
         # Get Product Original Price
         try:

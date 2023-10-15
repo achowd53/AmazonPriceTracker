@@ -37,7 +37,7 @@ export class ApiStack extends cdk.Stack {
     const updateProductPricesFn = new lambda.Function(this, 'updateProductPricesFn', {
       description: 'Update productTrackingTable DynamoDB',
       runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'blank.blank',
+      handler: 'index.blank',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_handlers/')),
       role: lambdaRole,
       functionName: 'updateProductPricesFn',
@@ -46,7 +46,7 @@ export class ApiStack extends cdk.Stack {
     const sendScheduledMessagesFn = new lambda.Function(this, 'sendScheduledMessagesFn', {
       description: 'Send email of tracked product prices to users',
       runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'blank.blank',
+      handler: 'index.blank',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_handlers/')),
       role: lambdaRole,
       functionName: 'sendScheduledMessagesFn',
@@ -60,7 +60,7 @@ export class ApiStack extends cdk.Stack {
     const updateUserDBFn = new lambda.Function(this, 'updateUserDBFn', {
       description: 'Updates userTrackingTable DynamoDB',
       runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'blank.blank',
+      handler: 'index.updateUserDB',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_handlers/')),
       role: lambdaRole,
       functionName: 'updateUserDBFn',
@@ -69,7 +69,7 @@ export class ApiStack extends cdk.Stack {
     const getTrackedPricesFn = new lambda.Function(this, 'getTrackedPricesFn', {
       description: 'Get tracked link prices for user',
       runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'blank.blank',
+      handler: 'index.blank',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_handlers/')),
       role: lambdaRole,
       functionName: 'getTrackedPricesFn',
