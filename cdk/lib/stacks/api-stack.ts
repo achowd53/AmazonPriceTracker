@@ -33,12 +33,41 @@ export class ApiStack extends cdk.Stack {
       ],
     }));
     //// AWS Lambda Functions
+    // Create Selenium-Chromium Layers
+    const seleniumLayer = new lambda.LayerVersion(this, 'seleniumLayer', {
+      compatibleRuntimes: [
+        lambda.Runtime.PYTHON_3_7,
+      ],
+      compatibleArchitectures: [
+        lambda.Architecture.X86_64,
+      ],
+      layerVersionName: 'seleniumLayer',
+      code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_dependencies/selenium.zip')),
+      description: 'Selenium library layer',
+    });
+    const chromedriverLayer = new lambda.LayerVersion(this, 'chromedriverLayer', {
+      compatibleRuntimes: [
+        lambda.Runtime.PYTHON_3_7,
+      ],
+      compatibleArchitectures: [
+        lambda.Architecture.X86_64,
+      ],
+      layerVersionName: 'chromedriverLayer',
+      code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_dependencies/chromedriver.zip')),
+      description: 'Chromedriver and binary layer',
+    });
     // Update Product Prices Lambda
     const updateProductPricesFn = new lambda.Function(this, 'updateProductPricesFn', {
       description: 'Update productTrackingTable DynamoDB',
-      runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'index.blank',
+      runtime: lambda.Runtime.PYTHON_3_7,
+      handler: 'updateProductPrices.updateProductPrices',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_handlers/')),
+      layers: [
+        seleniumLayer,
+        chromedriverLayer,
+      ],
+      timeout: cdk.Duration.minutes(5),
+      memorySize: 1680,
       role: lambdaRole,
       functionName: 'updateProductPricesFn',
     });
@@ -46,7 +75,7 @@ export class ApiStack extends cdk.Stack {
     const sendScheduledMessagesFn = new lambda.Function(this, 'sendScheduledMessagesFn', {
       description: 'Send email of tracked product prices to users',
       runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'index.blank',
+      handler: 'blank.blank',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_handlers/')),
       role: lambdaRole,
       functionName: 'sendScheduledMessagesFn',
@@ -60,7 +89,7 @@ export class ApiStack extends cdk.Stack {
     const updateUserDBFn = new lambda.Function(this, 'updateUserDBFn', {
       description: 'Updates userTrackingTable DynamoDB',
       runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'index.updateUserDB',
+      handler: 'updateUserDB.updateUserDB',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_handlers/')),
       role: lambdaRole,
       functionName: 'updateUserDBFn',
@@ -69,7 +98,7 @@ export class ApiStack extends cdk.Stack {
     const getTrackedPricesFn = new lambda.Function(this, 'getTrackedPricesFn', {
       description: 'Get tracked link prices for user',
       runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'index.blank',
+      handler: 'blank.blank',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_handlers/')),
       role: lambdaRole,
       functionName: 'getTrackedPricesFn',

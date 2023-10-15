@@ -49,12 +49,13 @@ def updateUserDB(event, context):
         )
         if "Items" in data:
             new_links = track_list - set(item["productLink"]['S'] for item in data["Items"])
-            if len(new_links) > 0:
+            for i in range(0,len(new_links),25):
+                new_links_seg = new_links[i:min(i+25,len(new_links))]
                 client.batch_write_item(
                     RequestItems = {
                         "productTrackingTable" : [
                             { "PutRequest": { "Item": { "productLink": { 'S':track_link } } } }
-                            for track_link in new_links
+                            for track_link in new_links_seg
                         ]
                     }
                 )
