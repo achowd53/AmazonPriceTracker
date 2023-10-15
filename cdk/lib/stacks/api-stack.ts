@@ -71,6 +71,11 @@ export class ApiStack extends cdk.Stack {
       role: lambdaRole,
       functionName: 'updateProductPricesFn',
     });
+    const updatePricesDailyRule = new events.Rule(this, 'updatePricesDailyRule', {
+      schedule: events.Schedule.expression('rate(7 days)'),
+      ruleName: 'updatePricesDailyRule',
+    });
+    updatePricesDailyRule.addTarget(new targets.LambdaFunction(updateProductPricesFn));
     // Send Scheduled Messages
     const sendScheduledMessagesFn = new lambda.Function(this, 'sendScheduledMessagesFn', {
       description: 'Send email of tracked product prices to users',
@@ -81,7 +86,7 @@ export class ApiStack extends cdk.Stack {
       functionName: 'sendScheduledMessagesFn',
     });
     const emailWeeklyRule = new events.Rule(this, 'emailWeeklyRule', {
-      schedule: events.Schedule.expression('rate(3 days)'),
+      schedule: events.Schedule.expression('rate(7 days)'),
       ruleName: 'emailWeeklyRule',
     });
     emailWeeklyRule.addTarget(new targets.LambdaFunction(sendScheduledMessagesFn));

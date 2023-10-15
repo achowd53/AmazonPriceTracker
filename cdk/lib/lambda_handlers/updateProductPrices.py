@@ -6,7 +6,7 @@ import boto3
 import json
 import time
 
-UPDATE_PRODUCT_PRICE_EVERY = 24 # Hours
+UPDATE_PRODUCT_PRICE_EVERY = 24*7 # Hours
 
 def updateProductPrices(event, context):
     try:
