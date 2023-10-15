@@ -1,5 +1,10 @@
 # AmazonPriceTracker
-Price Tracker for Amazon built on AWS architecture, with UIs available through Java and JavaScript
+Price Tracker for Amazon built on AWS architecture generated with AWS CDK for TypeScript with Python for the backend AWS Lambda functions, and a UI available in Java
+
+## Left To Implement
+sendScheduledMessages.py
+getTrackedPrices.py
+Java UI
 
 ## CDK Setup
 
