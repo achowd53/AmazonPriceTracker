@@ -26,14 +26,14 @@ export class ApiStack extends cdk.Stack {
       resources: ['*'],
       actions: [
         'lambda:*', 
-        'ses:SendEmail', 'ses:SendRawEmail',
+        'ses:*',
         'dynamodb:*',
         's3:ListAllMyBuckets',
         'logs:*',
       ],
     }));
     //// AWS Lambda Functions
-    // Create Selenium-Chromium Layers
+    // Create Selenium-Chromium Layers and Request Layer
     const seleniumLayer = new lambda.LayerVersion(this, 'seleniumLayer', {
       compatibleRuntimes: [
         lambda.Runtime.PYTHON_3_7,
@@ -71,17 +71,13 @@ export class ApiStack extends cdk.Stack {
       role: lambdaRole,
       functionName: 'updateProductPricesFn',
     });
-    const updatePricesDailyRule = new events.Rule(this, 'updatePricesDailyRule', {
-      schedule: events.Schedule.expression('rate(7 days)'),
-      ruleName: 'updatePricesDailyRule',
-    });
-    updatePricesDailyRule.addTarget(new targets.LambdaFunction(updateProductPricesFn));
     // Send Scheduled Messages
     const sendScheduledMessagesFn = new lambda.Function(this, 'sendScheduledMessagesFn', {
       description: 'Send email of tracked product prices to users',
       runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'blank.blank',
+      handler: 'sendScheduledMessages.sendScheduledMessages',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_handlers/')),
+      timeout: cdk.Duration.minutes(5),
       role: lambdaRole,
       functionName: 'sendScheduledMessagesFn',
     });
@@ -103,7 +99,7 @@ export class ApiStack extends cdk.Stack {
     const getTrackedPricesFn = new lambda.Function(this, 'getTrackedPricesFn', {
       description: 'Get tracked link prices for user',
       runtime: lambda.Runtime.PYTHON_3_11,
-      handler: 'blank.blank',
+      handler: 'getTrackedPrices.getTrackedPrices',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda_handlers/')),
       role: lambdaRole,
       functionName: 'getTrackedPricesFn',
