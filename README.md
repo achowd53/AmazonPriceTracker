@@ -7,10 +7,12 @@ Java UI
 
 ## CDK Setup
 
-1) Get AWS Accounts Information And Store In lib/config/constants.ts
-2) Set AWS SES Verified Email in lib/lambda_handlers/sendScheduledMessages.py
-3) Setup AWS Credentials For Accounts To Use AWS Cli
-4) Run `cdk bootstrap`
+1) CD cdk/
+2) Setup TypeScript and AWS-CDK-Lib
+3) Get AWS Accounts Information And Store In lib/config/constants.ts
+4) Set AWS SES Verified Email in lib/lambda_handlers/sendScheduledMessages.py
+5) Setup AWS Credentials For Accounts To Use AWS Cli
+6) Run `cdk bootstrap`
 
 This is a blank project for CDK development with TypeScript.
 
@@ -24,3 +26,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `cdk deploy`      deploy this stack to your default AWS account/region
 * `cdk diff`        compare deployed stack with current state
 * `cdk synth`       emits the synthesized CloudFormation template
+
+## Java UI
+1) CD app/
+2) Setup Maven
+3) Run mvn compile && mvn exec:java -Dexec.mainClass=com.apt.App
