@@ -3,11 +3,18 @@ Price Tracker for Amazon built on AWS architecture generated with AWS CDK for Ty
 
 ## Left To Implement
 Add API Documentation
+
 Java UI
+1) scrollableTable.updateData -- https://www.tutorialspoint.com/how-can-we-add-insert-a-jbutton-to-jtable-cell-in-java 
+2) scrollableTable.deleteButtons -- https://www.tutorialspoint.com/how-can-we-add-insert-a-jbutton-to-jtable-cell-in-java 
+3) mainFrame.eventDispatched
+4) updateForm.emailButton.actionListener
+5) updateForm.productButton.actionListener
+6) APTDataSingleton.java -- based on https://stackoverflow.com/a/4443490 -- will handle all API data and calls
 
 ## CDK Setup
 
-1) CD cdk/
+1) `cd cdk/`
 2) Setup TypeScript and AWS-CDK-Lib
 3) Get AWS Accounts Information And Store In lib/config/constants.ts
 4) Set AWS SES Verified Email in lib/lambda_handlers/sendScheduledMessages.py
@@ -28,6 +35,6 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `cdk synth`       emits the synthesized CloudFormation template
 
 ## Java UI
-1) CD app/
-2) Setup Maven
-3) Run mvn compile && mvn exec:java -Dexec.mainClass=com.apt.App
+1) `cd app/`
+2) Setup Maven and Make
+3) Run `make` or `mvn compile && mvn exec:java -Dexec.mainClass=com.apt.App`

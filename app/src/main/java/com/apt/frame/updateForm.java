@@ -1,12 +1,14 @@
 package com.apt.frame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
 
 public class updateForm extends JPanel {
 
@@ -31,6 +33,7 @@ public class updateForm extends JPanel {
         c.gridy = 0;
         JEditorPane productTextInfo = new JEditorPane();
         productTextInfo.setText("Product:");
+        productTextInfo.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         productTextInfo.setBackground(Color.LIGHT_GRAY);
         productTextInfo.setEditable(false);
         textNamePanel.add(productTextInfo, c);
@@ -38,6 +41,7 @@ public class updateForm extends JPanel {
         c.gridy = 1;
         JEditorPane emailTextInfo = new JEditorPane();
         emailTextInfo.setText("Email:");
+        emailTextInfo.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         emailTextInfo.setBackground(Color.LIGHT_GRAY);
         emailTextInfo.setEditable(false);
         textNamePanel.add(emailTextInfo, c);
@@ -48,12 +52,14 @@ public class updateForm extends JPanel {
         
         // Text Enter Panel In Center
         JPanel textEnterPanel = new JPanel();
+        textEnterPanel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         textEnterPanel.setLayout(new GridBagLayout());
 
         c.weightx = 10;
         c.weighty = 1;
         c.gridx = 1;
         JEditorPane productTextEntry = new JEditorPane();
+        productTextEntry.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         textEnterPanel.add(productTextEntry, c);
 
         c.gridy = 1;
@@ -71,13 +77,23 @@ public class updateForm extends JPanel {
         c.weightx = 2;
         c.weighty = 1;
         c.gridx = 2;
-        productEntryButton productButton = new productEntryButton();
+        JButton productButton = new JButton();
         productButton.setText("Track");
+        productButton.addActionListener(new ActionListener() { 
+            public void actionPerformed(ActionEvent e) { 
+                // Singleton Class
+            } 
+        });
         updateButtonPanel.add(productButton, c);
 
         c.gridy = 1;
-        emailUpdateButton emailButton = new emailUpdateButton();
+        JButton emailButton = new JButton();
         emailButton.setText("Update");
+        emailButton.addActionListener(new ActionListener() { 
+            public void actionPerformed(ActionEvent e) { 
+                // Singleton Class
+            } 
+        });
         updateButtonPanel.add(emailButton, c);
 
         c.weighty = 2;

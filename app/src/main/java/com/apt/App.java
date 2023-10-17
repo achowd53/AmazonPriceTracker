@@ -1,11 +1,15 @@
 package com.apt;
 
 import com.apt.frame.mainFrame;
+import javax.swing.SwingUtilities;
 
 public class App {
     public static void main( String[] args ) {
-        mainFrame window = new mainFrame();
-        window.updateTitle("Tom Hanks");
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new mainFrame("Tom", "Hanks");
+            }
+        });
         System.out.println( "Hello World!" );
     }
 }
