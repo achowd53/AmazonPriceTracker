@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
@@ -52,7 +50,6 @@ public class updateForm extends JPanel {
         
         // Text Enter Panel In Center
         JPanel textEnterPanel = new JPanel();
-        textEnterPanel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         textEnterPanel.setLayout(new GridBagLayout());
 
         c.weightx = 10;
@@ -64,12 +61,13 @@ public class updateForm extends JPanel {
 
         c.gridy = 1;
         JEditorPane emailTextEntry = new JEditorPane();
+        emailTextEntry.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         textEnterPanel.add(emailTextEntry, c);
 
         c.weighty = 2;
         c.gridy = 0;
         this.add(textEnterPanel, c);
-        
+
         // Update Button Panel On Right
         JPanel updateButtonPanel = new JPanel();
         updateButtonPanel.setLayout(new GridBagLayout());
@@ -79,26 +77,15 @@ public class updateForm extends JPanel {
         c.gridx = 2;
         JButton productButton = new JButton();
         productButton.setText("Track");
-        productButton.addActionListener(new ActionListener() { 
-            public void actionPerformed(ActionEvent e) { 
-                // Singleton Class
-            } 
-        });
         updateButtonPanel.add(productButton, c);
 
         c.gridy = 1;
         JButton emailButton = new JButton();
         emailButton.setText("Update");
-        emailButton.addActionListener(new ActionListener() { 
-            public void actionPerformed(ActionEvent e) { 
-                // Singleton Class
-            } 
-        });
         updateButtonPanel.add(emailButton, c);
 
         c.weighty = 2;
         c.gridy = 0;
         this.add(updateButtonPanel, c);
-        
     }
 }

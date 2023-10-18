@@ -4,22 +4,28 @@ import java.awt.AWTEvent;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.AWTEventListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import com.apt.data.APTDataSingleton;
 
 public class mainFrame extends JFrame implements AWTEventListener {
     String user;
-    String pwd;
 
     scrollableTable tablePanel;
     updateForm formPanel;
 
-    public mainFrame(String user, String pwd) {
+    public mainFrame() {
         super();
 
         // Get Input
-        this.user = user;
-        this.pwd = pwd;
+        APTDataSingleton dataCore = APTDataSingleton.getInstance();
+        this.user = dataCore.getUser();
 
         // Set Up Main Settings
         this.setTitle("Amazon Price Tracker  -  " + user);
@@ -47,11 +53,14 @@ public class mainFrame extends JFrame implements AWTEventListener {
         formPanel = new updateForm();
         this.getContentPane().add(formPanel, c);
 
+        // Add Listener to buttons located in updateFrame
+        addButtonListeners();
+        
         // Add KeyListener
         this.getToolkit().addAWTEventListener(this, AWTEvent.KEY_EVENT_MASK);
 
         // Update Table And Make Visible
-        this.tablePanel.updateData();
+        this.tablePanel.updateTable(true);
         this.setVisible(true);
     }
 
@@ -60,9 +69,48 @@ public class mainFrame extends JFrame implements AWTEventListener {
         if (event instanceof KeyEvent) {
             KeyEvent key = (KeyEvent) event;
             if (key.getKeyCode() == 82 && key.isControlDown() && key.getID() == KeyEvent.KEY_PRESSED) {
-                this.tablePanel.updateData();
+                this.tablePanel.updateTable(true);
                 key.consume();
             }
         }
+    }
+
+    public void addButtonListeners() {
+        // Add Listener to buttons located in updateFrame
+        JPanel updateButtonPanel = (JPanel) this.formPanel.getComponent(2);
+        JButton productButton = (JButton) updateButtonPanel.getComponent(0);
+        productButton.addActionListener(new ActionListener() { 
+            public void actionPerformed(ActionEvent e) { 
+                // Get Data
+                APTDataSingleton dataCore = APTDataSingleton.getInstance();
+
+                // Get Text Enter Boxes located in updateFrame
+                JPanel textEnterPanel = (JPanel) formPanel.getComponent(1);
+                JEditorPane productTextEntry = (JEditorPane) textEnterPanel.getComponent(0);
+
+                // Update add_track and delete productTextEntry text
+                String productText = productTextEntry.getText();
+                productTextEntry.setText("");
+                if (productText.matches(".+/dp/.{10}.+")) {
+                    dataCore.addEntry(productText);
+                    tablePanel.updateTable(false);
+                }
+            } 
+        });
+        JButton emailButton = (JButton) updateButtonPanel.getComponent(1);
+        emailButton.addActionListener(new ActionListener() { 
+            public void actionPerformed(ActionEvent e) { 
+                // Get Data
+                APTDataSingleton dataCore = APTDataSingleton.getInstance();
+
+                // Get Text Enter Boxes located in updateFrame
+                JPanel textEnterPanel = (JPanel) formPanel.getComponent(1);
+                JEditorPane emailTextEntry = (JEditorPane) textEnterPanel.getComponent(1);
+
+                // Update Email
+                dataCore.setEmail(emailTextEntry.getText());
+                tablePanel.updateTable(false);
+            } 
+        });
     }
 }
