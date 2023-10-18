@@ -29,9 +29,8 @@ public class APTDataSingleton {
 
     public String[] links; // Sorted links currently in table
 
-    public String API_ID = "rt2eifj9y6";
+    public String API_ID = "API-ID-HERE";
     public String API_REGION = "us-east-1";
-    public String getTrackedPricesAPI = "https://rt2eifj9y6.execute-api.us-east-1.amazonaws.com/prod/getTrackedPrices";
 
     private static APTDataSingleton instance = null;
 
