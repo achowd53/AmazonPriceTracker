@@ -1,12 +1,6 @@
 # AmazonPriceTracker
 Price Tracker for Amazon built on AWS architecture generated with AWS CDK for TypeScript with Python for the backend AWS Lambda functions, and a UI available in Java
 
-## Left To Implement
-Add API Documentation
-
-Java UI
-3) APTDataSingleton.refreshData
-
 ## CDK Setup
 
 1) `cd cdk/`
@@ -32,4 +26,5 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 ## Java UI
 1) `cd app/`
 2) Setup Maven and Make
-3) Run `make` after putting user, pwd in file or `mvn compile && mvn exec:java -Dexec.mainClass=com.apt.App -Dexec.args="$(username) $(password)"`
+3) Add API_ID and API_REGION for AmazonPriceTracker from API Gateway Console to src/main/java/com/apt/data/APTDataSingleton.java
+4) Run `make` after putting user, pwd in file or `mvn compile && mvn exec:java -Dexec.mainClass=com.apt.App -Dexec.args="$(username) $(password)"`

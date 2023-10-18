@@ -13,14 +13,17 @@ def updateUserDB(event, context):
                 "message": "User Credentials Missing From Input"
             })
         }
+
     # Get details from event
     user_hash = event["username"]+"&"+event["password"]
-    track_list = set(["https://www.amazon.com/dp/"+link.split("dp/")[1][:10] for link in event["add_track"]]) if "add_track" in event else set()
-    remove_track = event["remove_track"] if "remove_track" in event else set()
+    track_list = set(["https://www.amazon.com/dp/"+link.split("/dp/")[1][:10] for link in event["add_track"].split(",") if "/dp/" in link])-{''} if "add_track" in event else set()
+    remove_track = event["remove_track"].split(",") if "remove_track" in event else set()
     email = event["email"] if "email" in event else None
+    
     try:
         # Create DynamoDB Client
         client = boto3.client("dynamodb")
+        
         # Get Details of User If Already In Table
         data = client.get_item(
             TableName = "userTrackingTable",
@@ -30,9 +33,10 @@ def updateUserDB(event, context):
         )
         if "Item" in data:
             if "trackList" in data["Item"]:
-                track_list = (set(data["Item"]["trackList"]['S'].split(','))-set(remove_track))|track_list
+                track_list = (set(data["Item"]["trackList"]['S'].split(','))-set(remove_track)-{''})|track_list
             if "email" in data["Item"]:
                 email = data["Item"]["email"]['S'] if not email else email
+                
         # Create/Update Table Entry For Userhash
         client.put_item(
             TableName = "userTrackingTable",
@@ -42,6 +46,7 @@ def updateUserDB(event, context):
                 "email": { 'S':email } if email else { 'S':"" }
             }
         )
+        
         # Update Product Table With New Entries If Any
         data = client.scan(
             TableName = "productTrackingTable",
@@ -65,6 +70,7 @@ def updateUserDB(event, context):
                     InvocationType = "Event",
                     Payload = '{}'
                 )
+                
         # Return Response
         print("Successfully updated userTrackingTable for " + str(user_hash))
         return {

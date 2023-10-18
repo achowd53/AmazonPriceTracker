@@ -91,7 +91,7 @@ public class mainFrame extends JFrame implements AWTEventListener {
                 // Update add_track and delete productTextEntry text
                 String productText = productTextEntry.getText();
                 productTextEntry.setText("");
-                if (productText.matches(".+/dp/.{10}.+")) {
+                if (productText.matches(".+/dp/.{10}(.+)?")) {
                     dataCore.addEntry(productText);
                     tablePanel.updateTable(false);
                 }

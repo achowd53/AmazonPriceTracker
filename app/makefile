@@ -1,7 +1,7 @@
 all: App
 
-username = ENTER_USERNAME
-password = ENTER_PASSWORD
+username = Tom
+password = Hanks
 
 App:
 	mvn compile
